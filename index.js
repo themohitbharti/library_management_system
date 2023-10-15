@@ -196,6 +196,18 @@ app.delete("/books/:isbn_no", async (req, res) => {
   });
 
 
+  app.get("/books/unavailable_books", async (req, res) => {
+    try {
+      const unavailableBooks = await books.find({ inventory: 0 });
+      res.json({ unavailableBooks });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
+  
+
+
 
   
 
