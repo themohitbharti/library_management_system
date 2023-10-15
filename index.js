@@ -81,38 +81,38 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.get("/books", async (req, res) => {
-    const inventoryParam = req.query.inventory;
-    if (inventoryParam) {
-      // If the inventory query parameter is provided, filter by inventory
-      const n = parseInt(inventoryParam);
+// app.get("/books", async (req, res) => {
+//     const inventoryParam = req.query.inventory;
+//     if (inventoryParam) {
+//       // If the inventory query parameter is provided, filter by inventory
+//       const n = parseInt(inventoryParam);
   
-      try {
-        const book = await books.find({ inventory: { $lt: n } });
-        res.json({ book });
-      } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: "Server error", error: error.message });
-      }
-    } else {
-      // If no inventory query parameter, return all books
-      try {
-        const allbooks = await books.find({});
-        res.json({ allbooks });
-        console.log("All Books:", allbooks);
-      } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: "Server error", error: error.message });
-      }
-    }
-  });
+//       try {
+//         const book = await books.find({ inventory: { $lt: n } });
+//         res.json({ book });
+//       } catch (error) {
+//         console.error("Error:", error);
+//         res.status(500).json({ message: "Server error", error: error.message });
+//       }
+//     } else {
+//       // If no inventory query parameter, return all books
+//       try {
+//         const allbooks = await books.find({});
+//         res.json({ allbooks });
+//         console.log("All Books:", allbooks);
+//       } catch (error) {
+//         console.error("Error:", error);
+//         res.status(500).json({ message: "Server error", error: error.message });
+//       }
+//     }
+//   });
 
 
-// app.get("/books",async(req,res)=>{
-//     const allbooks = await books.find({});
-//     res.json(allbooks);
-//     console.log(allbooks);
-// });
+app.get("/books",async(req,res)=>{
+    const allbooks = await books.find({});
+    res.json(allbooks);
+    console.log(allbooks);
+});
 
 
 // app.get("/posts/:id",(req,res)=>{
@@ -182,18 +182,18 @@ app.delete("/books/:isbn_no", async (req, res) => {
   });
 
 
-//   app.get("/books", async (req, res) => {
-//     console.log("Received query parameters:", req.query);
-//     const n = parseInt(req.query.inventory); // Parse n from the query string
+  app.get("/books/find_books_needed", async (req, res) => {
     
-//     try {
-//       const book = await books.find({ inventory: { $lt: n } });
-//       res.json({ book });
-//     } catch (error) {
-//       console.error("Error:", error);
-//       res.status(500).json({ message: "Server error", error: error.message });
-//     }
-//   });
+    const n = parseInt(req.query.inventory); // Parse n from the query string
+    
+    try {
+      const book = await books.find({ inventory: { $lt: n } });
+      res.json({ book });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
 
 
 
