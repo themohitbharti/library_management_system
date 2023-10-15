@@ -136,6 +136,25 @@ app.post("/books",async(req,res)=>{
 //   res.json({message:"post deleted"});
 // });
 
+
+app.delete("/books/:isbn_no", async (req, res) => {
+    const isbn_no = req.params.isbn_no;
+  
+    try {
+      const deletedbook = await books.findOneAndDelete({ isbn_no });
+      
+      if (!deletedbook) {
+        return res.status(404).json({ message: "book not found" });
+      }
+  
+      res.json({ message: "book deleted", deletedbook });
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
+
+  
+
 app.listen(port, () => {
   console.log(`API is running at http://localhost:${port}`);
 });
