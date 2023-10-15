@@ -81,38 +81,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-// app.get("/books", async (req, res) => {
-//     const inventoryParam = req.query.inventory;
-//     if (inventoryParam) {
-//       // If the inventory query parameter is provided, filter by inventory
-//       const n = parseInt(inventoryParam);
-  
-//       try {
-//         const book = await books.find({ inventory: { $lt: n } });
-//         res.json({ book });
-//       } catch (error) {
-//         console.error("Error:", error);
-//         res.status(500).json({ message: "Server error", error: error.message });
-//       }
-//     } else {
-//       // If no inventory query parameter, return all books
-//       try {
-//         const allbooks = await books.find({});
-//         res.json({ allbooks });
-//         console.log("All Books:", allbooks);
-//       } catch (error) {
-//         console.error("Error:", error);
-//         res.status(500).json({ message: "Server error", error: error.message });
-//       }
-//     }
-//   });
+app.get("/books", async (req, res) => {
+    const isbn = req.query.isbn_no;
+    if (isbn) {
+        try {
+            const book = await books.findOne({ isbn_no: isbn });
+        
+            if (!book) {
+              return res.status(404).json({ error: 'Book not found' });
+            }
+        
+            return res.status(200).json({ book });
+          } catch (error) {
+            console.error("Error:", error);
+            return res.status(500).json({ error: 'Internal server error' });
+          }
+    } else {
+      // If no inventory query parameter, return all books
+      try {
+        const allbooks = await books.find({});
+        res.json({ allbooks });
+        console.log("All Books:", allbooks);
+      } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+      }
+    }
+  });
 
 
-app.get("/books",async(req,res)=>{
-    const allbooks = await books.find({});
-    res.json(allbooks);
-    console.log(allbooks);
-});
+// app.get("/books",async(req,res)=>{
+//     const allbooks = await books.find({});
+//     res.json(allbooks);
+//     console.log(allbooks);
+// });
 
 
 // app.get("/posts/:id",(req,res)=>{
@@ -205,6 +207,49 @@ app.delete("/books/:isbn_no", async (req, res) => {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   });
+
+
+  app.put("/books/:isbn_no", async (req, res) => {
+    const isbn = req.params.isbn_no;
+  
+  
+    try {
+      const updatedBook = await books.findOneAndUpdate(
+        { isbn_no: isbn },
+        req.body,
+        { new: true }
+      );
+  
+      if (!updatedBook) {
+        return res.status(404).json({ message: "Book not found" });
+      }
+  
+      res.json({ message: "Book updated", updatedBook });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
+  
+  
+
+//   app.get("/book", async (req, res) => {
+//     const isbn = req.query.isbn_no;
+  
+  
+//     try {
+//       const book = await books.findOne({ isbn_no: isbn });
+  
+//       if (!book) {
+//         return res.status(404).json({ error: 'Book not found' });
+//       }
+  
+//       return res.status(200).json({ book });
+//     } catch (error) {
+//       console.error("Error:", error);
+//       return res.status(500).json({ error: 'Internal server error' });
+//     }
+//   });
   
 
 
