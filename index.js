@@ -6,7 +6,7 @@ const app = express();
 const port = 8000;
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/mohitdb')
+mongoose.connect('mongodb://127.0.0.1:27017/booksdb')
 .then(() => console.log("mongodb connected"))
 .catch((err)=> console.log("mongo error",err));
 
@@ -44,7 +44,7 @@ const bookSchema = new mongoose.Schema({
 
 });
 
-const books= mongoose.model("bookdetail",bookSchema);
+const books= mongoose.model("bookdetails",bookSchema);
 
 // let posts = [
 //   {
@@ -93,17 +93,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 
 
-app.post("/posts",async(req,res)=>{
-  const result= await posts.create( {
+app.post("/books",async(req,res)=>{
+  const result= await books.create( {
      
-     title:req.body.title,
-     content:req.body.content,
-     author: req.body.author,
+     name:req.body.name,
+     isbn_no:req.body.isbn_no,
+     author_name: req.body.author_name,
+     genre:req.body.genre,
+     inventory:req.body.inventory,
+     publication_year:req.body.publication_year,
      
   });
 
   console.log("result is",result);
-  return res.status(201).json({mes: "success"});
+  return res.status(201).json(result);
 
   
 });
