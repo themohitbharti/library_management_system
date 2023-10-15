@@ -80,10 +80,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-// app.get("/posts",(req,res)=>{
-//   res.json(posts);
-//   console.log(posts);
-// });
+app.get("/books",async(req,res)=>{
+    const allbooks = await books.find({});
+    res.json(allbooks);
+    console.log(allbooks);
+});
 
 
 // app.get("/posts/:id",(req,res)=>{
