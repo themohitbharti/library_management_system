@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
 const app = express();
-const port = 8000;
+const port =  process.env.PORT || 8000;
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/booksdb')
