@@ -104,6 +104,7 @@ app.post("/books",async(req,res)=>{
 
 
 
+
 app.delete("/books/:isbn_no", async (req, res) => {
     const isbn_no = req.params.isbn_no;
   
@@ -172,16 +173,46 @@ app.delete("/books/:isbn_no", async (req, res) => {
 
 
 
-app.patch("/books/:isbn_no", async (req, res) => {
-    const isbn = req.params.isbn_no;
+// app.patch("/books/:isbn_no", async (req, res) => {
+//     const isbn = req.params.isbn_no;
     
-    const updatedFields = req.body.genre;
-    
+//     const updatedFields = req.body.find();
+
    
+//     try {
+//       const updatedBook = await books.findOneAndUpdate(
+//         { isbn_no: isbn },
+//         { $set: { } },
+//         { new: true }
+//       );
+  
+//       if (!updatedBook) {
+//         return res.status(404).json({ message: "Book not found" });
+//       }
+  
+//       res.json({ message: "Book updated", updatedBook });
+//     } catch (error) {
+//       console.error("Error:", error);
+//       res.status(500).json({ message: "Server error", error: error.message });
+//     }
+//   });
+
+
+
+
+  app.patch("/books/:isbn_no", async (req, res) => {
+    const isbn = req.params.isbn_no;
+    const updatedFields = req.body;
+  
+    const updateObject = {};
+    for (const key in updatedFields) {
+      updateObject[key] = updatedFields[key];
+    }
+  
     try {
       const updatedBook = await books.findOneAndUpdate(
         { isbn_no: isbn },
-        { $set: { genre: updatedFields} },
+        { $set: updateObject }, // Update all specified fields
         { new: true }
       );
   
@@ -195,6 +226,7 @@ app.patch("/books/:isbn_no", async (req, res) => {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   });
+  
   
 
   app.get("/books/issue_book/:isbn_no", async (req, res) => {
@@ -239,3 +271,13 @@ app.patch("/books/:isbn_no", async (req, res) => {
 app.listen(port, () => {
   console.log(`API is running at http://localhost:${port}`);
 });
+
+
+
+
+
+
+
+
+
+
