@@ -249,6 +249,16 @@ app.patch("/books/:isbn_no", async (req, res) => {
     }
   });
   
+  app.delete("/books", async (req, res) => {
+    try {
+      // Delete all book records
+      await books.deleteMany({});
+      res.json({ message: "All book records deleted" });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
   
  
 
