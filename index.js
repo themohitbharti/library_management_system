@@ -168,35 +168,6 @@ app.delete("/books/:isbn_no", async (req, res) => {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   });
-  
-  
-
-
-
-// app.patch("/books/:isbn_no", async (req, res) => {
-//     const isbn = req.params.isbn_no;
-    
-//     const updatedFields = req.body.find();
-
-   
-//     try {
-//       const updatedBook = await books.findOneAndUpdate(
-//         { isbn_no: isbn },
-//         { $set: { } },
-//         { new: true }
-//       );
-  
-//       if (!updatedBook) {
-//         return res.status(404).json({ message: "Book not found" });
-//       }
-  
-//       res.json({ message: "Book updated", updatedBook });
-//     } catch (error) {
-//       console.error("Error:", error);
-//       res.status(500).json({ message: "Server error", error: error.message });
-//     }
-//   });
-
 
 
 
