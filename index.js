@@ -221,7 +221,34 @@ app.patch("/books/:isbn_no", async (req, res) => {
   });
   
 
-
+  app.get("/books/issue_book/:isbn_no", async (req, res) => {
+    const isbn = req.params.isbn_no;
+  
+    
+  
+    try {
+      // Find the book by ISBN
+      const book = await books.findOne({ isbn_no: isbn });
+  
+      if (!book) {
+        return res.status(404).json({ message: "Book not found" });
+      }
+  
+      if (book.inventory <= 0) {
+        return res.status(400).json({ message: "Book is out of stock" });
+      }
+  
+      // Decrement the inventory by 1
+      book.inventory -= 1;
+      await book.save();
+  
+      res.json({ message: "Book inventory decremented", updatedBook: book });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  });
+  
   
  
 
